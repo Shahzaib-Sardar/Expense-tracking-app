@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+# Block commits that include likely secrets.
+PATTERN='(AIza[0-9A-Za-z_-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|BEGIN PRIVATE KEY|api[_-]?key[[:space:]]*[:=][[:space:]]*"[A-Za-z0-9._-]{16,}|token[[:space:]]*[:=][[:space:]]*"[A-Za-z0-9._-]{20,}|secret[[:space:]]*[:=][[:space:]]*"[A-Za-z0-9._-]{20,})'
+
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -Ev '^\.githooks/pre-commit$|^\.env\.example$')
+
+if [ -z "$FILES" ]; then
+  exit 0
+fi
+
+for file in $FILES; do
+  if git diff --cached -U0 -- "$file" \
+    | grep -E '^\+' \
+    | grep -Eiv '^\+\+\+|YOUR_|your_|placeholder|example' \
+    | grep -Eiq "$PATTERN"; then
+    echo "Commit blocked: potential secret detected in staged file: $file"
+    echo 'Remove secrets or move them to .env / --dart-define and try again.'
+    exit 1
+  fi
+done
+
+exit 0

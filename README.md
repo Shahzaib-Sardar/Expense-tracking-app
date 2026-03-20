@@ -128,5 +128,3 @@ Profile page with picture, name, email, and action buttons.
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/yourusername/expense-tracking-app.git

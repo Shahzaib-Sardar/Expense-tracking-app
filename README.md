@@ -101,23 +101,3 @@ android/app/google-services.json      # local only (ignored, if needed)
 ios/Runner/GoogleService-Info.plist   # local only (ignored, if needed)
 ```
 
-## Internship / LinkedIn Presentation Tips
-
-- Add polished screenshots in a folder like `assets/previews/`.
-- Include one short demo GIF of onboarding, adding expense, and dashboard update.
-- Show one architecture image (Auth flow + SQLite + UI pages).
-- Add a short "Security Improvements" section in your post:
-	- moved secrets to runtime env
-	- removed committed credentials
-	- added safe contribution workflow
-
-## Pre-Commit Advice
-
-Set a local Git hook path and add a secret-scan hook before each commit:
-
-```bash
-git config core.hooksPath .githooks
-```
-
-Then create `.githooks/pre-commit` to run a staged secret scan and block unsafe commits.
-
